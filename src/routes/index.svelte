@@ -46,6 +46,7 @@ const deleteTask = async (id) => {
     currentId = currenttask.id
     editStatus = true
 
+
   };
 
   const addTask = async () => {
@@ -68,19 +69,17 @@ const deleteTask = async (id) => {
     try {
         if (!editStatus) {
             addTask()
-            
             console.log("Updating task")
         } else {
             updateTask()
+            
         }
+
     } catch (error) {
         console.log(error)
     }
 
-    let task = {
-    title: "",
-    description: "",
-    }
+    task = { title: "", description: "" };
     editStatus = false
     currentId = "";
 
@@ -96,10 +95,11 @@ const onCancel = () => {
 <form on:submit|preventDefault={handleSubmit}>
 <input type="title" id="title" placeholder="Enter Title" bind:value={task.title}>
 <input type="description" id="description" placeholder="Enter Description" bind:value={task.description}>
-<button>Save</button>
+<button disabled={!task.title}>
+ {#if !editStatus}Save{:else}Update{/if}
+</button>
 </form>
-<!-- 
-<button disabled={!task.title}><i>save</i>{#if !editStatus}Save{:else}Update{/if}</button> -->
+
   {#if editStatus}
     <button on:click={onCancel}>Cancel</button>
   {/if}
@@ -113,6 +113,4 @@ const onCancel = () => {
         <button on:click={deleteTask(task.id)}>Delete</button>
         <button on:click={editTask(task)}>Edit</button>
     </div>
-
-    
 {/each}
